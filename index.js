@@ -75,7 +75,21 @@ async function run() {
                 .send({ success: true })
         })
 
-
+        const usersCollection = client.db('college-booking').collection('users');
+        app.post('/users', async (req, res) => {
+            const userInfo = req.body;
+            const filter = { email: userInfo.email }
+            const existingUser = await usersCollection.findOne(filter);
+            if (existingUser) {
+                return res.send({ message: 'user already exists', insertedId: null })
+            }
+            const result = await usersCollection.insertOne(userInfo);
+            res.send(result)
+        })
+        app.get('/user', async (req, res) => {
+            const result = await usersCollection.find().toArray();
+            res.send(result);
+        })
 
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });

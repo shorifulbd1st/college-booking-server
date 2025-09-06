@@ -75,22 +75,30 @@ async function run() {
                 .send({ success: true })
         })
 
-        const usersCollection = client.db('college-booking').collection('users');
+        const users = client.db('college-booking').collection('users');
+        const colleges = client.db('college-booking').collection('colleges');
+
+
         app.post('/users', async (req, res) => {
             const userInfo = req.body;
             const filter = { email: userInfo.email }
-            const existingUser = await usersCollection.findOne(filter);
+            const existingUser = await users.findOne(filter);
             if (existingUser) {
                 return res.send({ message: 'user already exists', insertedId: null })
             }
-            const result = await usersCollection.insertOne(userInfo);
+            const result = await users.insertOne(userInfo);
             res.send(result)
         })
-        app.get('/user', async (req, res) => {
-            const result = await usersCollection.find().toArray();
+        app.get('/users', async (req, res) => {
+            const result = await users.find().toArray();
             res.send(result);
         })
 
+        // all colleges
+        app.get('/colleges', async (req, res) => {
+            const result = await colleges.find().toArray();
+            res.send(result);
+        })
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");

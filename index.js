@@ -78,6 +78,7 @@ async function run() {
         const users = client.db('college-booking').collection('users');
         const colleges = client.db('college-booking').collection('colleges');
         const applyColleges = client.db('college-booking').collection('apply-colleges');
+        const reviewCollection = client.db('college-booking').collection('reviews');
 
 
 
@@ -116,6 +117,20 @@ async function run() {
         app.post('/college-registration', async (req, res) => {
             const data = req.body;
             const result = await applyColleges.insertOne(data);
+            res.send(result);
+        })
+
+        app.get('/colleges/:email', async (req, res) => {
+            const email = req.params.email;
+            console.log(email)
+            const query = { email };
+            const result = await applyColleges.find(query).toArray();
+            res.send(result);
+        })
+
+        app.post('/review', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
             res.send(result);
         })
         // Send a ping to confirm a successful connection

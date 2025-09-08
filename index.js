@@ -177,6 +177,18 @@ async function run() {
             res.send(result);
         })
 
+        // server.js or index.js
+        app.get("/colleges-search", async (req, res) => {
+            const search = req.query.search || "";
+            const query = search
+                ? { name: { $regex: search, $options: "i" } } // name এর সাথে ম্যাচ
+                : {};
+            const result = await colleges.find(query).toArray();
+            console.log(result)
+            res.send(result);
+        });
+
+
 
 
         // Send a ping to confirm a successful connection

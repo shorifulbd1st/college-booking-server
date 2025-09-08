@@ -148,6 +148,25 @@ async function run() {
             res.send({ profile, colleges });
 
         })
+
+
+        app.put('/college-registration-update/:id', async (req, res) => {
+            const id = req.params.id;
+            const { subject, phone, address, date } = req.body;
+            const query = { _id: new ObjectId(id) }
+            const updateDoc = {
+                $set: {
+                    subject,
+                    phone,
+                    address,
+                    date
+                }
+            };
+            const result = await applyColleges.updateOne(query, updateDoc);
+            console.log(result)
+            res.send(result)
+
+        })
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");

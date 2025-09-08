@@ -171,7 +171,7 @@ async function run() {
         app.delete('/delete-apply-college/:id', async (req, res) => {
 
             const id = req.params.id;
-            console.log(id)
+            // console.log(id)
             const query = { _id: new ObjectId(id) };
             const result = await applyColleges.deleteOne(query);
             res.send(result);
@@ -181,10 +181,10 @@ async function run() {
         app.get("/colleges-search", async (req, res) => {
             const search = req.query.search || "";
             const query = search
-                ? { name: { $regex: search, $options: "i" } } // name এর সাথে ম্যাচ
+                ? { name: { $regex: search, $options: "i" } }
                 : {};
             const result = await colleges.find(query).toArray();
-            console.log(result)
+            // console.log(result)
             res.send(result);
         });
 

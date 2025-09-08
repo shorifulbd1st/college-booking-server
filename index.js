@@ -122,7 +122,7 @@ async function run() {
 
         app.get('/colleges/:email', async (req, res) => {
             const email = req.params.email;
-            console.log(email)
+            // console.log(email)
             const query = { email };
             const result = await applyColleges.find(query).toArray();
             res.send(result);
@@ -137,6 +137,16 @@ async function run() {
         app.get('/reviews', async (req, res) => {
             const result = await reviewCollection.find().toArray();
             res.send(result);
+        })
+
+        app.get('/profile/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email };
+            const profile = await users.findOne(query);
+            const colleges = await applyColleges.find(query).toArray();
+
+            res.send({ profile, colleges });
+
         })
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
